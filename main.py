@@ -172,8 +172,8 @@ class TabLayout(QWidget):
                 self.sublayout2.addWidget( EntityData() )
         elif self.spinbox.value() < self.counter:
             # Delete all widgets
-            while self.sublayout2.count() > 0:
-                item = self.sublayout2.takeAt(0)
+            while self.sublayout2.count() > self.spinbox.value():
+                item = self.sublayout2.takeAt( self.sublayout2.count() - 1 )
 
                 if not item:
                     continue
@@ -183,8 +183,8 @@ class TabLayout(QWidget):
                     w.setParent(None)
 
             # Recreate all widgets
-            for i in range( 0, self.spinbox.value() ):
-                self.sublayout2.addWidget( EntityData() )
+            #for i in range( 0, self.spinbox.value() ):
+            #    self.sublayout2.addWidget( EntityData() )
 
         self.sublayout2.update()
         self.toplayout.update()
