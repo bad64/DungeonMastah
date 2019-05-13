@@ -58,8 +58,8 @@ class EntityData(QWidget):
         self.layout.addWidget(self.currentHP, 1, 1, 1, 1)
         self.layout.addWidget(QLabel("/"), 1, 2, 1, 1)
         self.layout.addWidget(self.maxHP, 1, 3, 1, 1)
-        self.layout.addWidget(self.HPPlus, 1, 4, 1, 1)
-        self.layout.addWidget(self.HPMinus, 1, 5, 1, 1)
+        self.layout.addWidget(self.HPMinus, 1, 4, 1, 1)
+        self.layout.addWidget(self.HPPlus, 1, 5, 1, 1)
         self.layout.addWidget(self.HPtoMax, 1, 6, 1, 1)
 
         # MP row
@@ -67,8 +67,8 @@ class EntityData(QWidget):
         self.layout.addWidget(self.currentMP, 2, 1, 1, 1)
         self.layout.addWidget(QLabel("/"), 2, 2, 1, 1)
         self.layout.addWidget(self.maxMP, 2, 3, 1, 1)
-        self.layout.addWidget(self.MPPlus, 2, 4, 1, 1)
-        self.layout.addWidget(self.MPMinus, 2, 5, 1, 1)
+        self.layout.addWidget(self.MPMinus, 2, 4, 1, 1)
+        self.layout.addWidget(self.MPPlus, 2, 5, 1, 1)
         self.layout.addWidget(self.MPtoMax, 2, 6, 1, 1)
 
         # Character stats
@@ -171,10 +171,23 @@ class TabLayout(QWidget):
             for i in range( 0, self.spinbox.value() - self.counter ):
                 self.sublayout2.addWidget( EntityData() )
         elif self.spinbox.value() < self.counter:
-            ## TODO: not working
-            for i in range( self.counter - 1, self.spinbox.value(), -1 ):
-                child = self.sublayout2.takeAt(i).widget()
-                child.destroy()
+            # Delete all widgets
+            while self.sublayout2.count() > 0:
+                item = self.sublayout2.takeAt(0)
+
+                if not item:
+                    continue
+
+                w = item.widget()
+                if w:
+                    w.setParent(None)
+
+            # Recreate all widgets
+            for i in range( 0, self.spinbox.value() ):
+                self.sublayout2.addWidget( EntityData() )
+
+        self.sublayout2.update()
+        self.toplayout.update()
         self.counter = self.spinbox.value()
 
 class MainWindow(QWidget):
